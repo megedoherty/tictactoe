@@ -46,8 +46,8 @@ const Board = () => {
 			setWinningSpaces(gameOver)
 		}
 
-		// Check if its a tie
-		if (filledInSpaces + 1 === 9) {
+		// If there's no winner, check if its a tie
+		if (result == null && filledInSpaces + 1 === 9) {
 			result = 'tie'
 		}
 

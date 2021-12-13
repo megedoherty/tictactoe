@@ -9,7 +9,6 @@ export const getNewBoard = () => {
 }
 
 export const checkWinner = (board, row, column) => {
-	debugger
 	// The new value on the board
 	const value = board[row][column]
 

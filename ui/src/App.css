@@ -33,4 +33,5 @@
 
 .game-over .empty-space {
   cursor: default;
+	background-color: initial;
 }

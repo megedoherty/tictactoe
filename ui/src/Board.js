@@ -14,6 +14,19 @@ const Board = () => {
   const [ gameResult, setGameResult ] = useState(null)
   const [ filledInSpaces, setFilledInSpaces ] = useState(0)
 
+	const saveGame = async(board, result) => {
+		fetch('/savegame', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+		  body: JSON.stringify({
+				board: board,
+				result: result,
+			})
+		})
+	}
+
   const updateSpace = (row, column) => {
 		// If the game is over, ignore the action
 		if (gameResult != null) return
@@ -24,16 +37,21 @@ const Board = () => {
 		setSpaces(newSpaces)
 
 		// Check for winner with this space
+		let result = null
 		const gameOver = checkWinner(newSpaces, row, column)
 
 		if (gameOver) {
-			setGameResult(`Player ${player}`)
-			return
+			result = `Player ${player}`
 		}
 
 		// Check if its a tie
 		if (filledInSpaces + 1 === 9) {
-			setGameResult('tie')
+			result = 'tie'
+		}
+
+		if (result != null) {
+			setGameResult(result)
+			saveGame(newSpaces, result)
 			return
 		}
 

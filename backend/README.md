@@ -4,4 +4,5 @@ This is a simple Flask API. It has one REST endpoint to save the result of a Tic
 
 In the project directory, you can run:
 
-### `python3 api.py`
+`pip install -r requirements.txt`
+`python3 api.py`

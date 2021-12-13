@@ -12,6 +12,7 @@ const Board = () => {
   const [ spaces, setSpaces ] = useState(getNewBoard())
   const [ player, setPlayer ] = useState(1)
   const [ gameResult, setGameResult ] = useState(null)
+  const [ winningSpaces, setWinningSpaces ] = useState(null)
   const [ filledInSpaces, setFilledInSpaces ] = useState(0)
 
 	const saveGame = async(board, result) => {
@@ -40,8 +41,9 @@ const Board = () => {
 		let result = null
 		const gameOver = checkWinner(newSpaces, row, column)
 
-		if (gameOver) {
+		if (gameOver != null) {
 			result = `Player ${player}`
+			setWinningSpaces(gameOver)
 		}
 
 		// Check if its a tie
@@ -66,6 +68,7 @@ const Board = () => {
     setPlayer(1)
     setGameResult(null)
 		setFilledInSpaces(0)
+		setWinningSpaces(null)
 	}
 
   return (
@@ -80,7 +83,7 @@ const Board = () => {
 									// Add 3 spaces to each row
 									return (
 										<Grid.Column key={columnIndex}>
-											<Space row={rowIndex} column={columnIndex} value={column} updateSpace={updateSpace} />
+											<Space row={rowIndex} column={columnIndex} value={column} updateSpace={updateSpace} winningSpaces={winningSpaces}/>
 										</Grid.Column>
 									)
 								})

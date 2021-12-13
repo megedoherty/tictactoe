@@ -14,19 +14,22 @@ export const checkWinner = (board, row, column) => {
 
   // Check row this was in first
 	if (board[row].every(x => x === value)) {
-	  return true
+	  return [[row, 0], [row, 1], [row, 2]]
 	}
 
 	// Check column this was in next
   if (board[0][column] === value && board[1][column] === value && board[2][column] === value) {
-	  return true
+	  return [[0, column], [1, column], [2, column]]
 	}
 
 	// Check left to right diagonal
-	if ((board[0][0] != null && board[0][0] === board[1][1] && board[1][1] === board[2][2])
-		|| (board[2][0] != null && board[2][0] === board[1][1] && board[1][1] === board[0][2])) {
-	  return true
+	if (board[0][0] != null && board[0][0] === board[1][1] && board[1][1] === board[2][2]) {
+	  return [[0, 0], [1, 1], [2, 2]]
 	}
 
-	return false
+	if (board[2][0] != null && board[2][0] === board[1][1] && board[1][1] === board[0][2]) {
+	  return [[2, 0], [1, 1], [0, 2]]
+	}
+
+	return null
 }

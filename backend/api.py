@@ -15,9 +15,11 @@ db.create_all()
 
 @app.route('/savegame', methods=['POST'])
 def save_game():
+    # Make sure we have content
     if not request.is_json:
         return flask.abort(400)
     
+    # Get the content and save it to the Game table
     json = request.get_json()
     new_game = Game(board=json['board'], result=json['result'])
 

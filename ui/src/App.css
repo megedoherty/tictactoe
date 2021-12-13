@@ -3,6 +3,7 @@
   background-color: #252839;
   height: 100vh;
   width: 100vw;
+	overflow: auto;
 }
 
 .ui.header.game-title {
@@ -24,8 +25,8 @@
 }
 
 .empty-space {
-  width: 150px;
-	height: 150px;
+  width: 80%;
+	height: 80%;
 	background-color: #495285;
 	cursor: pointer;
 	margin: auto;
@@ -34,4 +35,8 @@
 .game-over .empty-space {
   cursor: default;
 	background-color: initial;
+}
+
+.winning-space {
+  color: green;
 }

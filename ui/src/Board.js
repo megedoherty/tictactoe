@@ -1,57 +1,78 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Grid } from 'semantic-ui-react'
 
+import Result from './Result'
 import Space from './Space'
-
-/*
- * Player 1 is X, player 2 is O
- */
+import { checkWinner, getNewBoard } from './helpers'
 
 const player1 = 'close'
 const player2 = 'circle outline'
 
 const Board = () => {
-  const [ spaces, setSpaces ] = useState(() => {
-	  const x = new Array(3)
-
-		for (let i = 0; i < x.length; i++) {
-			x[i] = new Array(3).fill(null)
-		}
-
-		return x
-	})
+  const [ spaces, setSpaces ] = useState(getNewBoard())
   const [ player, setPlayer ] = useState(1)
+  const [ gameResult, setGameResult ] = useState(null)
+  const [ filledInSpaces, setFilledInSpaces ] = useState(0)
 
   const updateSpace = (row, column) => {
+		// If the game is over, ignore the action
+		if (gameResult != null) return
+
 		// Update the board with the new move
 		const newSpaces = spaces
 		spaces[row][column] = player === 1 ? player1 : player2
 		setSpaces(newSpaces)
 
-		// Switch players
+		// Check for winner with this space
+		const gameOver = checkWinner(newSpaces, row, column)
+
+		if (gameOver) {
+			setGameResult(`Player ${player}`)
+			return
+		}
+
+		// Check if its a tie
+		if (filledInSpaces + 1 === 9) {
+			setGameResult('tie')
+			return
+		}
+
+		setFilledInSpaces(prev => prev + 1)
+
+		// No winner, so switch player
 		setPlayer(prev => prev === 1 ? 2 : 1)
 	}
 
+	const resetGame = () => {
+		setSpaces(getNewBoard)
+    setPlayer(1)
+    setGameResult(null)
+		setFilledInSpaces(0)
+	}
+
   return (
-    <Grid relaxed celled='internally' columns={3}>
-			{ spaces.map((row, rowIndex) => {
-				// Iterating over each row now
-				return (
-				  <Grid.Row>
-  				  {
-							row.map((column, columnIndex) => {
-								// Add 3 spaces to each row
-								return (
-  							  <Grid.Column>
-	   	    				  <Space row={rowIndex} column={columnIndex} value={column} updateSpace={updateSpace} />
-		  						</Grid.Column>
-								)
-	     			  })
-						}
-					</Grid.Row>
-				)})
-			}
-		</Grid>
+		<React.Fragment>
+      <Grid relaxed celled='internally' columns={3} className={ gameResult != null ? 'game-over' : '' }>
+				{ spaces.map((row, rowIndex) => {
+					// Iterating over each row now
+					return (
+						<Grid.Row key={rowIndex}>
+							{
+								row.map((column, columnIndex) => {
+									// Add 3 spaces to each row
+									return (
+										<Grid.Column key={columnIndex}>
+											<Space row={rowIndex} column={columnIndex} value={column} updateSpace={updateSpace} />
+										</Grid.Column>
+									)
+								})
+							}
+						</Grid.Row>
+					)})
+				}
+			</Grid>
+			<Result gameResult={gameResult} player={player} resetGame={resetGame}/>
+		</React.Fragment>
   )
 }
 

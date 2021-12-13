@@ -17,10 +17,10 @@ const App = () => {
       </div>
 
       <Divider />
-			
-			<div className='game-content'>
+      
+      <div className='game-content'>
         <Board />
-			</div>
+      </div>
     </div>
   )
 }
